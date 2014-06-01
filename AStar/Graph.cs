@@ -76,7 +76,7 @@ namespace AStar
             }
             else
             {
-                throw new ArgumentException("There already exists a node in the graph with key " + key);
+                throw new ArgumentException("Já existe um 'nó' no grafo com a chave " + key);
             }
         }
 
@@ -92,7 +92,7 @@ namespace AStar
             }
             else
             {
-                throw new ArgumentException("There already exists a node in the graph with key " + key);
+                throw new ArgumentException("Já existe um 'nó' no grafo com a chave " + key);
             }
         }
 
@@ -108,7 +108,7 @@ namespace AStar
 			if (!nodes.ContainsKey(n.Key))
 				nodes.Add(n);
 			else
-				throw new ArgumentException("There already exists a node in the graph with key " + n.Key);
+                throw new ArgumentException("Já existe um 'nó' no grafo com a chave " + n.Key);
 		}
 		#endregion
 

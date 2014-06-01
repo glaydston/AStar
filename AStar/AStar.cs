@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-// http://www.leniel.net/2009/06/astar-pathfinding-search-in-csharp.html
-// http://blogs.msdn.com/ericlippert/archive/tags/AStar/default.aspx
-// http://blogs.vertigo.com/personal/rtaylor/Blog/Lists/Posts/Post.aspx?ID=4
 
 namespace AStar
 {
@@ -27,8 +24,7 @@ namespace AStar
                 // Used mainly for debug information.
                 // DistanceBetweenNodes(graph, DistanceType.Kilometers);
 
-                Console.WriteLine("A* Search - Sample implementation by Leniel Macaferi, June 7-20, 2009\n");
-                Console.WriteLine("These are the Cities you can choose as Start and Destination in Romania: \n");
+                Console.WriteLine("Essas são as cidades que você pode escolher como Origem e Destino na Roménia: \n");
 
                 // Prints on screen the cities that you can choose as Start and Destination.
                 foreach(Node n in graph.Nodes.Cast<Node>().OrderBy(n => n.Key))
@@ -61,21 +57,21 @@ namespace AStar
                 //Path<Node> shortestPath = FindPath(start, destination, distance, manhattanEstimation);
                 Path<Node> shortestPath = FindPath(start, destination, distance, haversineEstimation);
 
-                Console.WriteLine("\nThis is the shortest path based on the A* Search Algorithm:\n");
+                Console.WriteLine("\nEste é o menor caminho baseado no algoritmo de busca A*:\n");
 
                 // Prints the shortest path.
                 foreach(Path<Node> path in shortestPath.Reverse())
                 {
                     if(path.PreviousSteps != null)
                     {
-                        Console.WriteLine(string.Format("From {0, -15}  to  {1, -15} -> Total cost = {2:#.###} {3}",
+                        Console.WriteLine(string.Format("De {0, -15}  para  {1, -15} -> Custo total = {2:#.###} {3}",
                                           path.PreviousSteps.LastStep.Key, path.LastStep.Key, path.TotalCost, distanceType));
                     }
                 }
 
-                Console.Write("\nDo you wanna try A* Search again? Yes or No? ");
+                Console.Write("\nDeseja buscar novamente? Sim/Não? ");
             }
-            while(Console.ReadLine().ToLower() == "yes");
+            while(Console.ReadLine().ToLower() == "sim");
         }
 
         /// <summary>
@@ -92,7 +88,7 @@ namespace AStar
                 // For each city neighbor we gets its information and print it on screen.
                 foreach(EdgeToNeighbor etn in n.Neighbors)
                 {
-                    Console.WriteLine("Distance from {0} to {1} is -> {2:#.##} {3}", n.Key, etn.Neighbor.Key, etn.Cost, distanceType);
+                    Console.WriteLine("Distância de {0} para {1} é -> {2:#.##} {3}", n.Key, etn.Neighbor.Key, etn.Cost, distanceType);
                 }
             }
         }
@@ -107,7 +103,7 @@ namespace AStar
             string destinationCity;
             do
             {
-                Console.Write("\nEnter a Destination city: ");
+                Console.Write("\nInforme a cidade de Destino: ");
 
                 destinationCity = Console.ReadLine();
             }
@@ -125,7 +121,7 @@ namespace AStar
             string startCity;
             do
             {
-                Console.Write("\nEnter a Start city: ");
+                Console.Write("\nInforme a cidade de Origem: ");
 
                 startCity = Console.ReadLine();
             }
@@ -451,7 +447,7 @@ namespace AStar
         /// destination node.</param>
         private static void ViewOtherPaths<TNode>(PriorityQueue<double, Path<TNode>> queue, Func<TNode, double> estimate)
         {
-            Console.WriteLine("\nPossible paths:\n");
+            Console.WriteLine("\nCaminhos possíveis:\n");
 
             // The priority queue is composed of KeyValuePairs which has as key a double value (the TotalCost) and
             // has as Value a Queue which contains Paths.
@@ -468,7 +464,7 @@ namespace AStar
                     {
                         if(path.PreviousSteps != null)
                         {
-                            Console.WriteLine(string.Format("From {0, -14} to {1, -14} -> Total cost = {2:#.###} {3}",
+                            Console.WriteLine(string.Format("De {0, -14} para {1, -14} -> Custo total = {2:#.###} {3}",
                                               path.PreviousSteps.LastStep.Key, path.LastStep.Key, path.TotalCost, DistanceType.km));
                         }
                     }
@@ -478,8 +474,8 @@ namespace AStar
 
                     // Prints on the screen the relevant information so that it gets easier to debug the code and see how
                     // the A* search algorithm really does the job...
-                    Console.WriteLine("Estimation          = {0:0.###} {1}", otherPathEstimation, DistanceType.km);
-                    Console.WriteLine("Priority Queue Cost = {0:0.###} {1} = (Total cost + Estimation)", kvp.Key, DistanceType.km);
+                    Console.WriteLine("Estimativa          = {0:0.###} {1}", otherPathEstimation, DistanceType.km);
+                    Console.WriteLine("Custo do caminho = {0:0.###} {1} = (Custo total + Estimativa)", kvp.Key, DistanceType.km);
                 }
 
                 Console.WriteLine();
