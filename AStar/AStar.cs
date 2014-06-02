@@ -14,11 +14,12 @@ namespace AStar
                 // Creating the Graph...
                 Graph graph = new Graph();
 
-                //FillGraphWithGridMap(graph);
+                FillGraphWithGridMap(graph);
 
                 DistanceType distanceType = DistanceType.km;
 
-                FillGraphWithEarthMap(graph, distanceType);
+                // Using distance from latitude and longitude
+                //FillGraphWithEarthMap(graph, distanceType);
 
                 // Prints on the screen the distance from a city to its neighbors.
                 // Used mainly for debug information.
@@ -27,7 +28,7 @@ namespace AStar
                 Console.WriteLine("Essas são as cidades que você pode escolher como Origem e Destino na Roménia: \n");
 
                 // Prints on screen the cities that you can choose as Start and Destination.
-                foreach(Node n in graph.Nodes.Cast<Node>().OrderBy(n => n.Key))
+                foreach (Node n in graph.Nodes.Cast<Node>().OrderBy(n => n.Key))
                 {
                     Console.WriteLine(n.Key);
                 }
@@ -60,9 +61,9 @@ namespace AStar
                 Console.WriteLine("\nEste é o menor caminho baseado no algoritmo de busca A*:\n");
 
                 // Prints the shortest path.
-                foreach(Path<Node> path in shortestPath.Reverse())
+                foreach (Path<Node> path in shortestPath.Reverse())
                 {
-                    if(path.PreviousSteps != null)
+                    if (path.PreviousSteps != null)
                     {
                         Console.WriteLine(string.Format("De {0, -15}  para  {1, -15} -> Custo total = {2:#.###} {3}",
                                           path.PreviousSteps.LastStep.Key, path.LastStep.Key, path.TotalCost, distanceType));
@@ -71,7 +72,7 @@ namespace AStar
 
                 Console.Write("\nDeseja buscar novamente? Sim/Não? ");
             }
-            while(Console.ReadLine().ToLower() == "sim");
+            while (Console.ReadLine().ToLower() == "sim");
         }
 
         /// <summary>
@@ -83,10 +84,10 @@ namespace AStar
         {
             // First we cast the Graph.Nodes which is a NodeList to type Node and then we order the list of Nodes by the Node Key
             // so that we get the list of cities in ascending order.
-            foreach(Node n in graph.Nodes.Cast<Node>().OrderBy(n => n.Key))
+            foreach (Node n in graph.Nodes.Cast<Node>().OrderBy(n => n.Key))
             {
                 // For each city neighbor we gets its information and print it on screen.
-                foreach(EdgeToNeighbor etn in n.Neighbors)
+                foreach (EdgeToNeighbor etn in n.Neighbors)
                 {
                     Console.WriteLine("Distância de {0} para {1} é -> {2:#.##} {3}", n.Key, etn.Neighbor.Key, etn.Cost, distanceType);
                 }
@@ -107,7 +108,7 @@ namespace AStar
 
                 destinationCity = Console.ReadLine();
             }
-            while(!graph.Nodes.ContainsKey(destinationCity));
+            while (!graph.Nodes.ContainsKey(destinationCity));
             return destinationCity;
         }
 
@@ -125,7 +126,7 @@ namespace AStar
 
                 startCity = Console.ReadLine();
             }
-            while(!graph.Nodes.ContainsKey(startCity));
+            while (!graph.Nodes.ContainsKey(startCity));
             return startCity;
         }
 
@@ -135,88 +136,58 @@ namespace AStar
         /// <param name="graph"></param>
         private static void FillGraphWithGridMap(Graph graph)
         {
-            // Vertexes
+            // Vertexes (nome, data, x, y)
             graph.AddNode("Arad", null, 46, -114);
             graph.AddNode("Bucharest", null, 452, -329);
-            graph.AddNode("Craiova", null, 257, -382);
-            graph.AddNode("Dobreta", null, 143, -367);
-            graph.AddNode("Eforie", null, 664, -374);
             graph.AddNode("Fagaras", null, 329, -169);
             graph.AddNode("Giurgiu", null, 418, -404);
-            graph.AddNode("Hirsova", null, 627, -300);
-            graph.AddNode("Iasi", null, 548, -95);
             graph.AddNode("Lugoj", null, 142, -263);
             graph.AddNode("Mehadia", null, 146, -314);
-            graph.AddNode("Neamt", null, 459, -55);
             graph.AddNode("Oradea", null, 98, -9);
             graph.AddNode("Pitesti", null, 347, -278);
             graph.AddNode("Rimnicu Vilcea", null, 232, -221);
             graph.AddNode("Sibiu", null, 198, -158);
             graph.AddNode("Timisoara", null, 49, -221);
-            graph.AddNode("Urziceni", null, 526, -300);
-            graph.AddNode("Vaslui", null, 596, -176);
             graph.AddNode("Zerind", null, 68, -61);
 
             // Edges
 
             // Arad <-> Zerind
-            graph.AddUndirectedEdge("Arad", "Zerind", 53);
+            graph.AddUndirectedEdge("Arad", "Zerind", 75);
             // Arad <-> Timisoara
-            graph.AddUndirectedEdge("Arad", "Timisoara", 107);
+            graph.AddUndirectedEdge("Arad", "Timisoara", 118);
             // Arad <-> Sibiu
-            graph.AddUndirectedEdge("Arad", "Sibiu", 153);
+            graph.AddUndirectedEdge("Arad", "Sibiu", 140);
 
-            // Bucharest <-> Urziceni
-            graph.AddUndirectedEdge("Bucharest", "Urziceni", 75);
             // Bucharest <-> Giurgiu
-            graph.AddUndirectedEdge("Bucharest", "Giurgiu", 75);
+            graph.AddUndirectedEdge("Bucharest", "Giurgiu", 90);
             // Bucharest <-> Pitesti
-            graph.AddUndirectedEdge("Bucharest", "Pitesti", 105);
+            graph.AddUndirectedEdge("Bucharest", "Pitesti", 101);
             // Bucharest <-> Fagaras
-            graph.AddUndirectedEdge("Bucharest", "Fagaras", 160);
-
-            // Craiova <-> Dobreta
-            graph.AddUndirectedEdge("Craiova", "Dobreta", 115);
-            // Craiova <-> Pitesti
-            graph.AddUndirectedEdge("Craiova", "Pitesti", 106);
-            // Craiova <-> Rimnicu Vilcea
-            graph.AddUndirectedEdge("Craiova", "Rimnicu Vilcea", 161);
-
-            // Dobreta <-> Mehadia
-            graph.AddUndirectedEdge("Dobreta", "Mehadia", 52);
-
-            // Eforie <-> Hirsova
-            graph.AddUndirectedEdge("Eforie", "Hirsova", 74);
+            graph.AddUndirectedEdge("Bucharest", "Fagaras", 211);
 
             // Fagaras <-> Sibiu
-            graph.AddUndirectedEdge("Fagaras", "Sibiu", 132);
-
-            // Hirsova <-> Urziceni
-            graph.AddUndirectedEdge("Hirsova", "Urziceni", 101);
-
-            // Iasi <-> Neamt
-            graph.AddUndirectedEdge("Iasi", "Neamt", 89);
-            // Iasi <-> Vaslui
-            graph.AddUndirectedEdge("Iasi", "Vaslui", 83);
+            graph.AddUndirectedEdge("Fagaras", "Sibiu", 90);
 
             // Lugoj <-> Mehadia
-            graph.AddUndirectedEdge("Lugoj", "Mehadia", 52);
+            graph.AddUndirectedEdge("Lugoj", "Mehadia", 70);
             // Lugoj <-> Timisoara
-            graph.AddUndirectedEdge("Lugoj", "Timisoara", 94);
+            graph.AddUndirectedEdge("Lugoj", "Timisoara", 111);
+
+            // Mehadia <-> Giurgiu
+            graph.AddUndirectedEdge("Mehadia", "Giurgiu", 200);
 
             // Oradea <-> Zerind
-            graph.AddUndirectedEdge("Oradea", "Zerind", 52);
+            graph.AddUndirectedEdge("Oradea", "Zerind", 71);
             // Oradea <-> Sibiu
-            graph.AddUndirectedEdge("Oradea", "Sibiu", 150);
+            graph.AddUndirectedEdge("Oradea", "Sibiu", 151);
 
             // Pitesti <-> Rimnicu Vilcea
-            graph.AddUndirectedEdge("Pitesti", "Rimnicu Vilcea", 114);
+            graph.AddUndirectedEdge("Pitesti", "Rimnicu Vilcea", 97);
 
             // Rimnicu Vilcea <-> Sibiu
-            graph.AddUndirectedEdge("Rimnicu Vilcea", "Sibiu", 63);
+            graph.AddUndirectedEdge("Rimnicu Vilcea", "Sibiu", 80);
 
-            // Urziceni <-> Vaslui
-            graph.AddUndirectedEdge("Urziceni", "Vaslui", 124);
         }
 
         /// <summary>
@@ -229,21 +200,12 @@ namespace AStar
         /// <param name="distanceType">The DistanceType (KM or Miles) between neighbor cities</param>
         private static void FillGraphWithEarthMap(Graph graph, DistanceType distanceType)
         {
-            // 20 Vertexes
-            Node arad = new Node("Arad", null, 46.1792414, 21.3150154); // Creating a Node...
+            // 12 Vertexes
+            Node arad = new Node("Arad", null, 46.1792414, 21.3150154); // Creating a Node(key, data, latitude, longitude)
             graph.AddNode(arad); // Adding the Node to the Graph...
 
             Node bucharest = new Node("Bucharest", null, 44.4479237, 26.097879);
             graph.AddNode(bucharest);
-
-            Node craiova = new Node("Craiova", null, 44.3182085, 23.8016427);
-            graph.AddNode(craiova);
-
-            Node dobreta = new Node("Dobreta", null, 44.6302374, 22.6519904);
-            graph.AddNode(dobreta);
-
-            Node eforie = new Node("Eforie", null, 44.049114, 28.652727);
-            graph.AddNode(eforie);
 
             Node fagaras = new Node("Fagaras", null, 45.843342, 24.977871);
             graph.AddNode(fagaras);
@@ -251,20 +213,11 @@ namespace AStar
             Node giurgiu = new Node("Giurgiu", null, 43.8959986, 25.9550199);
             graph.AddNode(giurgiu);
 
-            Node hirsova = new Node("Hirsova", null, 44.691842, 27.951481);
-            graph.AddNode(hirsova);
-
-            Node iasi = new Node("Iasi", null, 47.1569514, 27.5898533);
-            graph.AddNode(iasi);
-
             Node lugoj = new Node("Lugoj", null, 45.688011, 21.9161);
             graph.AddNode(lugoj);
 
             Node mehadia = new Node("Mehadia", null, 44.906575, 22.360437);
             graph.AddNode(mehadia);
-
-            Node neamt = new Node("Neamt", null, 47.0355965, 26.4680355);
-            graph.AddNode(neamt);
 
             Node oradea = new Node("Oradea", null, 47.06094, 21.9276655);
             graph.AddNode(oradea);
@@ -281,16 +234,10 @@ namespace AStar
             Node timisoara = new Node("Timisoara", null, 45.7479372, 21.2251759);
             graph.AddNode(timisoara);
 
-            Node urziceni = new Node("Urziceni", null, 47.71996, 22.406675);
-            graph.AddNode(urziceni);
-
-            Node vaslui = new Node("Vaslui", null, 46.6403758, 27.7295175);
-            graph.AddNode(vaslui);
-
             Node zerind = new Node("Zerind", null, 46.6247847, 21.5170587);
             graph.AddNode(zerind);
 
-            // 41 Edges
+            // 20 Edges
             // Arad <-> Sibiu
             graph.AddUndirectedEdge(arad, sibiu, Haversine.Distance(arad, sibiu, distanceType));
             // Arad <-> Timisoara
@@ -298,60 +245,17 @@ namespace AStar
             // Arad <-> Zerind
             graph.AddUndirectedEdge(arad, zerind, Haversine.Distance(arad, zerind, distanceType));
 
-            // Bucharest <-> Craiova
-            graph.AddUndirectedEdge(bucharest, craiova, Haversine.Distance(bucharest, craiova, distanceType));
-            // Bucharest <-> Eforie
-            graph.AddUndirectedEdge(bucharest, eforie, Haversine.Distance(bucharest, eforie, distanceType));
             // Bucharest <-> Fagaras
             graph.AddUndirectedEdge(bucharest, fagaras, Haversine.Distance(bucharest, fagaras, distanceType));
             // Bucharest <-> Giurgiu
             graph.AddUndirectedEdge(bucharest, giurgiu, Haversine.Distance(bucharest, giurgiu, distanceType));
-            // Bucharest <-> Hirsova
-            graph.AddUndirectedEdge(bucharest, hirsova, Haversine.Distance(bucharest, hirsova, distanceType));
-            // Bucharest <-> Neamt
-            graph.AddUndirectedEdge(bucharest, neamt, Haversine.Distance(bucharest, neamt, distanceType));
             // Bucharest <-> Pitesti
             graph.AddUndirectedEdge(bucharest, pitesti, Haversine.Distance(bucharest, pitesti, distanceType));
-            // Bucharest <-> Vaslui
-            graph.AddUndirectedEdge(bucharest, vaslui, Haversine.Distance(bucharest, vaslui, distanceType));
 
-            // Craiova <-> Dobreta
-            graph.AddUndirectedEdge(craiova, dobreta, Haversine.Distance(craiova, dobreta, distanceType));
-            // Craiova <-> Giurgiu
-            graph.AddUndirectedEdge(craiova, giurgiu, Haversine.Distance(craiova, giurgiu, distanceType));
-            // Craiova <-> Pitesti
-            graph.AddUndirectedEdge(craiova, pitesti, Haversine.Distance(craiova, pitesti, distanceType));
-            // Craiova <-> Rimnicu Vilcea
-            graph.AddUndirectedEdge(craiova, rimnicuVilcea, Haversine.Distance(craiova, rimnicuVilcea, distanceType));
-
-            // Dobreta <-> Mehadia
-            graph.AddUndirectedEdge(dobreta, mehadia, Haversine.Distance(dobreta, mehadia, distanceType));
-
-            // Eforie <-> Hirsova
-            graph.AddUndirectedEdge(eforie, hirsova, Haversine.Distance(eforie, hirsova, distanceType));
-            // Eforie <-> Giurgiu
-            graph.AddUndirectedEdge(eforie, giurgiu, Haversine.Distance(eforie, giurgiu, distanceType));
-
-            // Fagaras <-> Hirsova
-            graph.AddUndirectedEdge(fagaras, hirsova, Haversine.Distance(fagaras, hirsova, distanceType));
-            // Fagaras <-> Neamt
-            graph.AddUndirectedEdge(fagaras, neamt, Haversine.Distance(fagaras, neamt, distanceType));
             // Fagaras <-> Pitesti
             graph.AddUndirectedEdge(fagaras, pitesti, Haversine.Distance(fagaras, pitesti, distanceType));
             // Fagaras <-> Sibiu
             graph.AddUndirectedEdge(fagaras, sibiu, Haversine.Distance(fagaras, sibiu, distanceType));
-            // Fagaras <-> Urziceni
-            graph.AddUndirectedEdge(fagaras, urziceni, Haversine.Distance(fagaras, urziceni, distanceType));
-            // Fagaras <-> Vaslui
-            graph.AddUndirectedEdge(fagaras, vaslui, Haversine.Distance(fagaras, vaslui, distanceType));
-
-            // Hirsova <-> Vaslui
-            graph.AddUndirectedEdge(hirsova, vaslui, Haversine.Distance(hirsova, vaslui, distanceType));
-
-            // Iasi <-> Neamt
-            graph.AddUndirectedEdge(iasi, neamt, Haversine.Distance(iasi, neamt, distanceType));
-            // Iasi <-> Vaslui
-            graph.AddUndirectedEdge(iasi, vaslui, Haversine.Distance(iasi, vaslui, distanceType));
 
             // Lugoj <-> Mehadia
             graph.AddUndirectedEdge(lugoj, mehadia, Haversine.Distance(lugoj, mehadia, distanceType));
@@ -368,16 +272,11 @@ namespace AStar
             graph.AddUndirectedEdge(mehadia, rimnicuVilcea, Haversine.Distance(mehadia, rimnicuVilcea, distanceType));
             // Mehadia <-> Timisoara
             graph.AddUndirectedEdge(mehadia, timisoara, Haversine.Distance(mehadia, timisoara, distanceType));
-
-            // Neamt <-> Vaslui
-            graph.AddUndirectedEdge(neamt, vaslui, Haversine.Distance(neamt, vaslui, distanceType));
-            // Neamt <-> Urziceni
-            graph.AddUndirectedEdge(neamt, urziceni, Haversine.Distance(neamt, urziceni, distanceType));
+            // Mehadia <-> Giurgiu
+            graph.AddUndirectedEdge(mehadia, giurgiu, Haversine.Distance(mehadia, giurgiu, distanceType));
 
             // Oradea <-> Sibiu
             graph.AddUndirectedEdge(oradea, sibiu, Haversine.Distance(oradea, sibiu, distanceType));
-            // Oradea <-> Urziceni
-            graph.AddUndirectedEdge(oradea, urziceni, Haversine.Distance(oradea, urziceni, distanceType));
             // Oradea <-> Zerind
             graph.AddUndirectedEdge(oradea, zerind, Haversine.Distance(oradea, zerind, distanceType));
 
@@ -411,19 +310,19 @@ namespace AStar
 
             queue.Enqueue(0, new Path<TNode>(start));
 
-            while(!queue.IsEmpty)
+            while (!queue.IsEmpty)
             {
                 var path = queue.Dequeue();
 
-                if(closed.Contains(path.LastStep))
+                if (closed.Contains(path.LastStep))
                     continue;
 
-                if(path.LastStep.Equals(destination))
+                if (path.LastStep.Equals(destination))
                     return path;
 
                 closed.Add(path.LastStep);
 
-                foreach(TNode n in path.LastStep.Neighbours)
+                foreach (TNode n in path.LastStep.Neighbours)
                 {
                     double d = distance(path.LastStep, n);
 
@@ -451,18 +350,18 @@ namespace AStar
 
             // The priority queue is composed of KeyValuePairs which has as key a double value (the TotalCost) and
             // has as Value a Queue which contains Paths.
-            foreach(KeyValuePair<double, Queue<Path<TNode>>> kvp in queue)
+            foreach (KeyValuePair<double, Queue<Path<TNode>>> kvp in queue)
             {
                 // For each path in the Queue...
-                foreach(Path<TNode> otherPath in kvp.Value)
+                foreach (Path<TNode> otherPath in kvp.Value)
                 {
                     // Reverse the Path so that we get the order of the cities in a more meaningful way...
                     var otherPathReversed = otherPath.Cast<Path<Node>>().Reverse();
 
                     // Prints on screen the Cities that are part of this path.
-                    foreach(Path<Node> path in otherPathReversed)
+                    foreach (Path<Node> path in otherPathReversed)
                     {
-                        if(path.PreviousSteps != null)
+                        if (path.PreviousSteps != null)
                         {
                             Console.WriteLine(string.Format("De {0, -14} para {1, -14} -> Custo total = {2:#.###} {3}",
                                               path.PreviousSteps.LastStep.Key, path.LastStep.Key, path.TotalCost, DistanceType.km));
@@ -491,7 +390,7 @@ namespace AStar
             {
                 List<Node> nodes = new List<Node>();
 
-                foreach(EdgeToNeighbor etn in Neighbors)
+                foreach (EdgeToNeighbor etn in Neighbors)
                 {
                     nodes.Add(etn.Neighbor);
                 }
