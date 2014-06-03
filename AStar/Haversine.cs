@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AStar
+namespace ATPS
 {
     /// <summary>
     /// The distance type to return the results in.

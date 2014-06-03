@@ -1,4 +1,4 @@
-namespace AStar
+namespace ATPS
 {
     /// <summary>
     /// A TNode is uniquely identified by its string Key.  A TNode also has a Data property of type object
@@ -36,10 +36,10 @@ namespace AStar
         /// <summary>
         /// Returns an AdjacencyList of the TNode's neighbors.
         /// </summary>
-        public AdjacencyList Neighbors { get; private set; }
+        public ListaAdjacente Neighbors { get; private set; }
 
         /// <summary>
-        /// Returns the TNode's Path Parent.
+        /// Returns the TNode's Caminho Parent.
         /// </summary>
         public Node PathParent { get; set; }
 
@@ -80,14 +80,14 @@ namespace AStar
         {
         }
 
-        public Node(string key, object data, AdjacencyList neighbors)
+        public Node(string key, object data, ListaAdjacente neighbors)
         {
             Key = key;
             Data = data;
 
             if (neighbors == null)
             {
-                Neighbors = new AdjacencyList();
+                Neighbors = new ListaAdjacente();
             }
             else
             {
@@ -95,7 +95,7 @@ namespace AStar
             }
         }
 
-        public Node(string key, object data, int x, int y, AdjacencyList neighbors)
+        public Node(string key, object data, int x, int y, ListaAdjacente neighbors)
         {
             Key = key;
             Data = data;
@@ -104,7 +104,7 @@ namespace AStar
 
             if (neighbors == null)
             {
-                Neighbors = new AdjacencyList();
+                Neighbors = new ListaAdjacente();
             }
             else
             {
@@ -112,7 +112,7 @@ namespace AStar
             }
         }
 
-        public Node(string key, object data, double latitude, double longitude, AdjacencyList neighbors)
+        public Node(string key, object data, double latitude, double longitude, ListaAdjacente neighbors)
         {
             Key = key;
             Data = data;
@@ -121,7 +121,7 @@ namespace AStar
 
             if (neighbors == null)
             {
-                Neighbors = new AdjacencyList();
+                Neighbors = new ListaAdjacente();
             }
             else
             {
@@ -140,7 +140,7 @@ namespace AStar
         /// </summary>
         internal void AddDirected(Node n)
         {
-            AddDirected(new EdgeToNeighbor(n));
+            AddDirected(new Vertices(n));
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace AStar
         /// <param name="cost">The weight of the edge.</param>
         internal void AddDirected(Node n, int cost)
         {
-            AddDirected(new EdgeToNeighbor(n, cost));
+            AddDirected(new Vertices(n, cost));
         }
 
         /// <summary>
@@ -158,13 +158,13 @@ namespace AStar
         /// <param name="cost">The weight of the edge.</param>
         internal void AddDirected(Node n, double cost)
         {
-            AddDirected(new EdgeToNeighbor(n, cost));
+            AddDirected(new Vertices(n, cost));
         }
 
         /// <summary>
         /// Adds an edge based on the data in the passed-in EdgeToNeighbor instance.
         /// </summary>
-        internal void AddDirected(EdgeToNeighbor e)
+        internal void AddDirected(Vertices e)
         {
             Neighbors.Add(e);
         }
