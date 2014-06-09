@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace AStar
+namespace Romania
 {
 	/// <summary>
 	/// AdjacencyList maintains a list of neighbors for a particular <see cref="Node"/>.  It is derived from CollectionBase

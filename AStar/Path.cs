@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 
-namespace AStar
+namespace Romania
 {
     class Path<Node> : IEnumerable<Path<Node>>
     {

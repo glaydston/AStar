@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AStar
+namespace Romania
 {
     class PriorityQueue<P, V> : IEnumerable
     {

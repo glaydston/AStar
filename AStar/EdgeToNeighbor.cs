@@ -1,4 +1,4 @@
-namespace AStar
+namespace Romania
 {
     /// <summary>
     /// EdgeToNeighbor represents an edge eminating from one <see cref="Node"/> to its neighbor.  The EdgeToNeighbor
@@ -24,10 +24,7 @@ namespace AStar
 
         #region Constructors
 
-        public EdgeToNeighbor(Node neighbor) : this(neighbor, 0)
-        {
-
-        }
+        public EdgeToNeighbor(Node neighbor) : this(neighbor, 0) {}
 
         public EdgeToNeighbor(Node neighbor, double cost)
         {
@@ -41,7 +38,7 @@ namespace AStar
 
         public override string ToString()
         {
-            return string.Format("Neighbor = {0} | Cost = {1}", Neighbor.Key, Cost);
+            return string.Format("Vizinho = {0} | Custo = {1}", Neighbor.Key, Cost);
         }
 
         #endregion

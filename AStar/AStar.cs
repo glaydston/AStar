@@ -3,27 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace AStar
+namespace Romania
 {
+
     class AStar
     {
         static void Main(string[] args)
         {
             do
             {
-                // Creating the Graph...
                 Graph graph = new Graph();
 
                 FillGraphWithGridMap(graph);
 
                 DistanceType distanceType = DistanceType.km;
 
-                // Using distance from latitude and longitude
-                //FillGraphWithEarthMap(graph, distanceType);
-
                 // Prints on the screen the distance from a city to its neighbors.
                 // Used mainly for debug information.
-                // DistanceBetweenNodes(graph, DistanceType.Kilometers);
+                DistanceBetweenNodes(graph, DistanceType.km);
 
                 Console.WriteLine("Essas são as cidades que você pode escolher como Origem e Destino na Roménia: \n");
 
@@ -46,17 +43,7 @@ namespace AStar
                                                     node1.Neighbors.Cast<EdgeToNeighbor>().Single(
                                                         etn => etn.Neighbor.Key == node2.Key).Cost;
 
-                // Estimation/Heuristic function (Manhattan distance)
-                // It tells us the estimated distance between the last node on a proposed path and the destination node.
-                //Func<Node, double> manhattanEstimation = n => Math.Abs(n.X - destination.X) + Math.Abs(n.Y - destination.Y);
-
-                // Estimation/Heuristic function (Haversine distance)
-                // It tells us the estimated distance between the last node on a proposed path and the destination node.
-                Func<Node, double> haversineEstimation =
-                    n => Haversine.Distance(n, destination, DistanceType.km);
-
-                //Path<Node> shortestPath = FindPath(start, destination, distance, manhattanEstimation);
-                Path<Node> shortestPath = FindPath(start, destination, distance, haversineEstimation);
+                Path<Node> shortestPath = FindPath(start, destination, distance);
 
                 Console.WriteLine("\nEste é o menor caminho baseado no algoritmo de busca A*:\n");
 
@@ -136,19 +123,19 @@ namespace AStar
         /// <param name="graph"></param>
         private static void FillGraphWithGridMap(Graph graph)
         {
-            // Vertexes (nome, data, x, y)
-            graph.AddNode("Arad", null, 46, -114);
-            graph.AddNode("Bucharest", null, 452, -329);
-            graph.AddNode("Fagaras", null, 329, -169);
-            graph.AddNode("Giurgiu", null, 418, -404);
-            graph.AddNode("Lugoj", null, 142, -263);
-            graph.AddNode("Mehadia", null, 146, -314);
-            graph.AddNode("Oradea", null, 98, -9);
-            graph.AddNode("Pitesti", null, 347, -278);
-            graph.AddNode("Rimnicu Vilcea", null, 232, -221);
-            graph.AddNode("Sibiu", null, 198, -158);
-            graph.AddNode("Timisoara", null, 49, -221);
-            graph.AddNode("Zerind", null, 68, -61);
+            // Vertexes (nome)
+            graph.AddNode("Arad");
+            graph.AddNode("Bucharest");
+            graph.AddNode("Fagaras");
+            graph.AddNode("Giurgiu");
+            graph.AddNode("Lugoj");
+            graph.AddNode("Mehadia");
+            graph.AddNode("Oradea");
+            graph.AddNode("Pitesti");
+            graph.AddNode("Rimnicu Vilcea");
+            graph.AddNode("Sibiu");
+            graph.AddNode("Timisoara");
+            graph.AddNode("Zerind");
 
             // Edges
 
@@ -191,103 +178,6 @@ namespace AStar
         }
 
         /// <summary>
-        /// Fills a Graph with Romania map information.
-        /// The Graph contains Nodes that represents Cities of Romania.
-        /// Each Node has as its key the City name and its Latitude and Longitude associated information.
-        /// Nodes are vertexes in the Graph. Connections between Nodes are edges.
-        /// </summary>
-        /// <param name="graph">The Graph to be filled</param>
-        /// <param name="distanceType">The DistanceType (KM or Miles) between neighbor cities</param>
-        private static void FillGraphWithEarthMap(Graph graph, DistanceType distanceType)
-        {
-            // 12 Vertexes
-            Node arad = new Node("Arad", null, 46.1792414, 21.3150154); // Creating a Node(key, data, latitude, longitude)
-            graph.AddNode(arad); // Adding the Node to the Graph...
-
-            Node bucharest = new Node("Bucharest", null, 44.4479237, 26.097879);
-            graph.AddNode(bucharest);
-
-            Node fagaras = new Node("Fagaras", null, 45.843342, 24.977871);
-            graph.AddNode(fagaras);
-
-            Node giurgiu = new Node("Giurgiu", null, 43.8959986, 25.9550199);
-            graph.AddNode(giurgiu);
-
-            Node lugoj = new Node("Lugoj", null, 45.688011, 21.9161);
-            graph.AddNode(lugoj);
-
-            Node mehadia = new Node("Mehadia", null, 44.906575, 22.360437);
-            graph.AddNode(mehadia);
-
-            Node oradea = new Node("Oradea", null, 47.06094, 21.9276655);
-            graph.AddNode(oradea);
-
-            Node pitesti = new Node("Pitesti", null, 44.858801, 24.8666793);
-            graph.AddNode(pitesti);
-
-            Node rimnicuVilcea = new Node("Rimnicu Vilcea", null, 45.110039, 24.382641);
-            graph.AddNode(rimnicuVilcea);
-
-            Node sibiu = new Node("Sibiu", null, 45.7931069, 24.1505932);
-            graph.AddNode(sibiu);
-
-            Node timisoara = new Node("Timisoara", null, 45.7479372, 21.2251759);
-            graph.AddNode(timisoara);
-
-            Node zerind = new Node("Zerind", null, 46.6247847, 21.5170587);
-            graph.AddNode(zerind);
-
-            // 20 Edges
-            // Arad <-> Sibiu
-            graph.AddUndirectedEdge(arad, sibiu, Haversine.Distance(arad, sibiu, distanceType));
-            // Arad <-> Timisoara
-            graph.AddUndirectedEdge(arad, timisoara, Haversine.Distance(arad, timisoara, distanceType));
-            // Arad <-> Zerind
-            graph.AddUndirectedEdge(arad, zerind, Haversine.Distance(arad, zerind, distanceType));
-
-            // Bucharest <-> Fagaras
-            graph.AddUndirectedEdge(bucharest, fagaras, Haversine.Distance(bucharest, fagaras, distanceType));
-            // Bucharest <-> Giurgiu
-            graph.AddUndirectedEdge(bucharest, giurgiu, Haversine.Distance(bucharest, giurgiu, distanceType));
-            // Bucharest <-> Pitesti
-            graph.AddUndirectedEdge(bucharest, pitesti, Haversine.Distance(bucharest, pitesti, distanceType));
-
-            // Fagaras <-> Pitesti
-            graph.AddUndirectedEdge(fagaras, pitesti, Haversine.Distance(fagaras, pitesti, distanceType));
-            // Fagaras <-> Sibiu
-            graph.AddUndirectedEdge(fagaras, sibiu, Haversine.Distance(fagaras, sibiu, distanceType));
-
-            // Lugoj <-> Mehadia
-            graph.AddUndirectedEdge(lugoj, mehadia, Haversine.Distance(lugoj, mehadia, distanceType));
-            // Lugoj <-> Rimnicu Vilcea
-            graph.AddUndirectedEdge(lugoj, rimnicuVilcea, Haversine.Distance(lugoj, rimnicuVilcea, distanceType));
-            // Lugoj <-> Sibiu
-            graph.AddUndirectedEdge(lugoj, sibiu, Haversine.Distance(lugoj, sibiu, distanceType));
-            // Lugoj <-> Timisoara
-            graph.AddUndirectedEdge(lugoj, timisoara, Haversine.Distance(lugoj, timisoara, distanceType));
-            // Lugoj <-> Zerind
-            graph.AddUndirectedEdge(lugoj, zerind, Haversine.Distance(lugoj, zerind, distanceType));
-
-            // Mehadia <-> Rimnicu Vilcea
-            graph.AddUndirectedEdge(mehadia, rimnicuVilcea, Haversine.Distance(mehadia, rimnicuVilcea, distanceType));
-            // Mehadia <-> Timisoara
-            graph.AddUndirectedEdge(mehadia, timisoara, Haversine.Distance(mehadia, timisoara, distanceType));
-            // Mehadia <-> Giurgiu
-            graph.AddUndirectedEdge(mehadia, giurgiu, Haversine.Distance(mehadia, giurgiu, distanceType));
-
-            // Oradea <-> Sibiu
-            graph.AddUndirectedEdge(oradea, sibiu, Haversine.Distance(oradea, sibiu, distanceType));
-            // Oradea <-> Zerind
-            graph.AddUndirectedEdge(oradea, zerind, Haversine.Distance(oradea, zerind, distanceType));
-
-            // Pitesti <-> Rimnicu Vilcea
-            graph.AddUndirectedEdge(pitesti, rimnicuVilcea, Haversine.Distance(pitesti, rimnicuVilcea, distanceType));
-
-            // Rimnicu Vilcea <-> Sibiu
-            graph.AddUndirectedEdge(rimnicuVilcea, sibiu, Haversine.Distance(rimnicuVilcea, sibiu, distanceType));
-        }
-
-        /// <summary>
         /// This is the method responsible for finding the shortest path between a Start and Destination cities using the A*
         /// search algorithm.
         /// </summary>
@@ -295,14 +185,12 @@ namespace AStar
         /// <param name="start">Start city</param>
         /// <param name="destination">Destination city</param>
         /// <param name="distance">Function which tells us the exact distance between two neighbours.</param>
-        /// <param name="estimate">Function which tells us the estimated distance between the last node on a proposed path and the
-        /// destination node.</param>
         /// <returns></returns>
         static public Path<TNode> FindPath<TNode>(
             TNode start,
             TNode destination,
-            Func<TNode, TNode, double> distance,
-            Func<TNode, double> estimate) where TNode : IHasNeighbours<TNode>
+            Func<TNode, TNode, double> distance)
+            where TNode : IHasNeighbours<TNode>
         {
             var closed = new HashSet<TNode>();
 
@@ -328,10 +216,10 @@ namespace AStar
 
                     var newPath = path.AddStep(n, d);
 
-                    queue.Enqueue(newPath.TotalCost + estimate(n), newPath);
+                    queue.Enqueue(newPath.TotalCost, newPath);
                 }
 
-                ViewOtherPaths(queue, estimate);
+                ViewOtherPaths(queue);
             }
 
             return null;
@@ -342,9 +230,7 @@ namespace AStar
         /// </summary>
         /// <typeparam name="TNode">The Node type</typeparam>
         /// <param name="queue">The priority queue</param>
-        /// <param name="estimate">Function which tells us the estimated distance between the last node on a proposed path and the
-        /// destination node.</param>
-        private static void ViewOtherPaths<TNode>(PriorityQueue<double, Path<TNode>> queue, Func<TNode, double> estimate)
+        private static void ViewOtherPaths<TNode>(PriorityQueue<double, Path<TNode>> queue)
         {
             Console.WriteLine("\nCaminhos possíveis:\n");
 
@@ -367,20 +253,21 @@ namespace AStar
                                               path.PreviousSteps.LastStep.Key, path.LastStep.Key, path.TotalCost, DistanceType.km));
                         }
                     }
-
-                    // Get the estimation cost of the other possible path.
-                    double otherPathEstimation = estimate(otherPath.LastStep);
-
+                    
                     // Prints on the screen the relevant information so that it gets easier to debug the code and see how
                     // the A* search algorithm really does the job...
-                    Console.WriteLine("Estimativa          = {0:0.###} {1}", otherPathEstimation, DistanceType.km);
-                    Console.WriteLine("Custo do caminho = {0:0.###} {1} = (Custo total + Estimativa)", kvp.Key, DistanceType.km);
+                    Console.WriteLine("Custo do caminho = {0:0.###} {1}", kvp.Key, DistanceType.km);
                 }
 
                 Console.WriteLine();
             }
         }
     }
+
+    /// <summary>
+    /// The distance type to return the results in.
+    /// </summary>
+    public enum DistanceType { ml, km };
 
     sealed partial class Node : IHasNeighbours<Node>
     {

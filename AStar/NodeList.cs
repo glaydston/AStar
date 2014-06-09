@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 
-namespace ATPS
+namespace Romania
 {
 	/// <summary>
 	/// The NodeList class represents a collection of nodes.  Internally, it uses a Hashtable instance to provide
-	/// fast lookup via a <see cref="Node"/> class's <b>Key</b> value.  The <see cref="Grafo"/> class maintains its
+	/// fast lookup via a <see cref="Node"/> class's <b>Key</b> value.  The <see cref="Graph"/> class maintains its
 	/// list of nodes via this class.
 	/// </summary>
 	public class NodeList : IEnumerable

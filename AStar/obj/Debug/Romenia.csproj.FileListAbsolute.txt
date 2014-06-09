@@ -3,3 +3,4 @@
 \\vmware-host\Shared Folders\Home\Workspace\AStar\AStar\bin\Debug\AStar.pdb
 \\vmware-host\Shared Folders\Home\Workspace\AStar\AStar\obj\Debug\AStar.exe
 \\vmware-host\Shared Folders\Home\Workspace\AStar\AStar\obj\Debug\AStar.pdb
+\\vmware-host\Shared Folders\Home\Workspace\AStar\AStar\obj\Debug\Romenia.csprojResolveAssemblyReference.cache

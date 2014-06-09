@@ -1,6 +1,6 @@
 using System;
 
-namespace AStar
+namespace Romania
 {
 	/// <summary>
 	/// The Graph class represents a graph, which is composed of a collection of nodes and edges.  This Graph class
@@ -48,54 +48,23 @@ namespace AStar
 		/// Adds a new node to the graph.
 		/// </summary>
 		/// <param name="key">The key value of the node to add.</param>
-		/// <param name="data">The data of the node to add.</param>
 		/// <returns>A reference to the TNode that was created and added to the graph.</returns>
 		/// <remarks>If there already exists a node in the graph with the same <b>key</b> value then an
 		/// <b>ArgumentException</b> exception will be thrown.</remarks>
-		public virtual Node AddNode(string key, object data)
+		public virtual Node AddNode(string key)
 		{
 			// Make sure the key is unique
 			if (!nodes.ContainsKey(key))
 			{
-				Node n = new Node(key, data);
+				Node n = new Node(key);
 				nodes.Add(n);
 				return n;
 			}
 			else
-				throw new ArgumentException("There already exists a node in the graph with key " + key);
+                throw new ArgumentException("Já existe um 'nó' no grafo com a chave " + key);
 		}
 
-        public virtual Node AddNode(string key, object data, int x, int y)
-        {
-            // Make sure the key is unique
-            if(!nodes.ContainsKey(key))
-            {
-                Node n = new Node(key, data, x, y);
-                nodes.Add(n);
-                return n;
-            }
-            else
-            {
-                throw new ArgumentException("Já existe um 'nó' no grafo com a chave " + key);
-            }
-        }
-
-        public virtual Node AddNode(string key, object data, double latitude, double longitude)
-        {
-            // Make sure the key is unique
-            if(!nodes.ContainsKey(key))
-            {
-                Node n = new Node(key, data, latitude, longitude);
-                nodes.Add(n);
-
-                return n;
-            }
-            else
-            {
-                throw new ArgumentException("Já existe um 'nó' no grafo com a chave " + key);
-            }
-        }
-
+        
 		/// <summary>
 		/// Adds a new node to the graph.
 		/// </summary>
@@ -113,76 +82,7 @@ namespace AStar
 		#endregion
 
 		#region Adding Edge Methods
-		/// <summary>
-		/// Adds a directed edge from one node to another.
-		/// </summary>
-		/// <param name="uKey">The <b>Key</b> of the node from which the directed edge eminates.</param>
-		/// <param name="vKey">The <b>Key</b> of the node from which the directed edge leads to.</param>
-		/// <remarks>If nodes with <b>uKey</b> and <b>vKey</b> do not exist in the graph, an <b>ArgumentException</b>
-		/// exception is thrown.</remarks>
-		public virtual void AddDirectedEdge(string uKey, string vKey)
-		{
-			AddDirectedEdge(uKey, vKey, 0);
-		}
-
-		/// <summary>
-		/// Adds a directed, weighted edge from one node to another.
-		/// </summary>
-		/// <param name="uKey">The <b>Key</b> of the node from which the directed edge eminates.</param>
-		/// <param name="vKey">The <b>Key</b> of the node from which the directed edge leads to.</param>
-		/// <param name="cost">The weight of the edge.</param>
-		/// <remarks>If nodes with <b>uKey</b> and <b>vKey</b> do not exist in the graph, an <b>ArgumentException</b>
-		/// exception is thrown.</remarks>
-		public virtual void AddDirectedEdge(string uKey, string vKey, int cost)
-		{
-			// get references to uKey and vKey
-			if (nodes.ContainsKey(uKey) && nodes.ContainsKey(vKey))
-				AddDirectedEdge(nodes[uKey], nodes[vKey], cost);
-			else
-				throw new ArgumentException("One or both of the nodes supplied were not members of the graph.");
-		}
-
-		/// <summary>
-		/// Adds a directed edge from one node to another.
-		/// </summary>
-		/// <param name="u">The node from which the directed edge eminates.</param>
-		/// <param name="v">The node from which the directed edge leads to.</param>
-		/// <remarks>If the passed-in nodes do not exist in the graph, an <b>ArgumentException</b>
-		/// exception is thrown.</remarks>
-		public virtual void AddDirectedEdge(Node u, Node v)
-		{
-			AddDirectedEdge(u, v, 0);
-		}
-
-		/// <summary>
-		/// Adds a directed, weighted edge from one node to another.
-		/// </summary>
-		/// <param name="u">The node from which the directed edge eminates.</param>
-		/// <param name="v">The node from which the directed edge leads to.</param>
-		/// <param name="cost">The weight of the edge.</param>
-		/// <remarks>If the passed-in nodes do not exist in the graph, an <b>ArgumentException</b>
-		/// exception is thrown.</remarks>
-		public virtual void AddDirectedEdge(Node u, Node v, int cost)
-		{
-			// Make sure u and v are Nodes in this graph
-			if (nodes.ContainsKey(u.Key) && nodes.ContainsKey(v.Key))
-				// add an edge from u -> v
-				u.AddDirected(v, cost);
-			else			
-				// one or both of the nodes were not found in the graph
-				throw new ArgumentException("One or both of the nodes supplied were not members of the graph.");
-		}
-
-		/// <summary>
-		/// Adds an undirected edge from one node to another.
-		/// </summary>
-		/// <remarks>If nodes with <b>uKey</b> and <b>vKey</b> do not exist in the graph, an <b>ArgumentException</b>
-		/// exception is thrown.</remarks>
-		public virtual void AddUndirectedEdge(string uKey, string vKey)
-		{
-			AddUndirectedEdge(uKey, vKey, 0);
-		}
-
+	
 		/// <summary>
 		/// Adds an undirected, weighted edge from one node to another.
 		/// </summary>
@@ -195,17 +95,7 @@ namespace AStar
 			if (nodes.ContainsKey(uKey) && nodes.ContainsKey(vKey))
 				AddUndirectedEdge(nodes[uKey], nodes[vKey], cost);
 			else
-				throw new ArgumentException("One or both of the nodes supplied were not members of the graph.");
-		}
-
-		/// <summary>
-		/// Adds an undirected edge from one node to another.
-		/// </summary>
-		/// <remarks>If the passed-in nodes do not exist in the graph, an <b>ArgumentException</b>
-		/// exception is thrown.</remarks>
-		public virtual void AddUndirectedEdge(Node u, Node v)
-		{
-			AddUndirectedEdge(u, v, 0);
+                throw new ArgumentException("Um ou nenhum dos 'nós' não foi encontrado no grafo.");
 		}
 
 		/// <summary>
@@ -225,30 +115,10 @@ namespace AStar
 			}
 			else			
 				// one or both of the nodes were not found in the graph
-				throw new ArgumentException("One or both of the nodes supplied were not members of the graph.");
+                throw new ArgumentException("Um ou nenhum dos 'nós' não foi encontrado no grafo.");
 		}
 
-        /// <summary>
-        /// Adds an undirected, weighted edge from one node to another.
-        /// </summary>
-        /// <param name="cost">The weight of the edge.</param>
-        /// <remarks>If the passed-in nodes do not exist in the graph, an <b>ArgumentException</b>
-        /// exception is thrown.</remarks>
-        public virtual void AddUndirectedEdge(Node u, Node v, double cost)
-        {
-            // Make sure u and v are Nodes in this graph
-            if(nodes.ContainsKey(u.Key) && nodes.ContainsKey(v.Key))
-            {
-                // Add an edge from u -> v and from v -> u
-                u.AddDirected(v, cost);
-                v.AddDirected(u, cost);
-            }
-            else
-                // one or both of the nodes were not found in the graph
-                throw new ArgumentException("One or both of the nodes supplied were not members of the graph.");
-        }
-
-		#endregion
+        #endregion
 
 		#region Contains Methods
 		/// <summary>
